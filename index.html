@@ -1,0 +1,2766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENXIEL | Cybersecurity, OT & AI Governance</title>
+  <meta name="description" content="ENXIEL delivers cybersecurity, OT security, GRC, and AI governance advisory services for critical infrastructure organizations.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ENXIEL",
+    "url": "https://enxiel.com",
+    "description": "Cybersecurity, OT security, GRC, and AI governance advisory services.",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "contact@enxiel.com",
+      "contactType": "sales"
+    }
+  }
+  </script>
+
+  <style>
+    /* ─── DESIGN TOKENS ─────────────────────────────────────── */
+    :root {
+      --bg:        #080b10;
+      --bg2:       #0d1117;
+      --bg3:       #111820;
+      --surface:   #141c27;
+      --border:    rgba(255,255,255,0.07);
+      --accent:    #00d4ff;
+      --accent2:   #0077ff;
+      --accent3:   #7b2fff;
+      --text:      #e8edf5;
+      --muted:     #6b7a94;
+      --display:   'Bebas Neue', 'Impact', sans-serif;
+      --body:      'Barlow', sans-serif;
+      --mono:      'Space Mono', monospace;
+      --r:         8px;
+      --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ─── RESET & BASE ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 { font-family: var(--display); line-height: 1.05; letter-spacing: 0.02em; }
+    h3, h4 { font-family: var(--body); font-weight: 600; line-height: 1.3; letter-spacing: 0; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    ul { list-style: none; }
+
+    /* ─── NOISE TEXTURE OVERLAY ─────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ─── SCROLLBAR ─────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 2px; }
+
+    /* ─── NAV ───────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 72px;
+      transition: background var(--transition), backdrop-filter var(--transition), border-color var(--transition);
+      border-bottom: 1px solid transparent;
+    }
+
+    nav.scrolled {
+      background: rgba(8, 11, 16, 0.88);
+      backdrop-filter: blur(20px);
+      border-color: var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color var(--transition);
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--accent2), var(--accent3));
+      color: #fff !important;
+      padding: 0.6rem 1.4rem;
+      border-radius: 4px;
+      font-weight: 600 !important;
+      letter-spacing: 0.05em;
+      transition: opacity var(--transition) !important;
+    }
+
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      background: rgba(8,11,16,0.97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      padding: 2rem 5%;
+      gap: 1.5rem;
+      z-index: 99;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 1.1rem; font-weight: 500; color: var(--text); }
+    .mobile-menu .nav-cta {
+      display: inline-block;
+      text-align: center;
+      -webkit-text-fill-color: #fff;
+    }
+
+    /* ─── HERO ──────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 120px 5% 80px;
+    }
+
+    /* animated grid background */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridPan 20s linear infinite;
+    }
+
+    @keyframes gridPan {
+      from { background-position: 0 0; }
+      to   { background-position: 60px 60px; }
+    }
+
+    /* radial glow orbs */
+    .hero-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+    }
+    .hero-glow-1 {
+      width: 600px; height: 600px;
+      top: -100px; left: -100px;
+      background: radial-gradient(circle, rgba(0,119,255,0.18), transparent 70%);
+      animation: floatOrb 8s ease-in-out infinite;
+    }
+    .hero-glow-2 {
+      width: 500px; height: 500px;
+      bottom: -80px; right: -60px;
+      background: radial-gradient(circle, rgba(123,47,255,0.15), transparent 70%);
+      animation: floatOrb 10s ease-in-out infinite reverse;
+    }
+    .hero-glow-3 {
+      width: 300px; height: 300px;
+      top: 40%; left: 55%;
+      background: radial-gradient(circle, rgba(0,212,255,0.10), transparent 70%);
+      animation: floatOrb 6s ease-in-out infinite 2s;
+    }
+
+    @keyframes floatOrb {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%       { transform: translate(20px, -30px) scale(1.05); }
+    }
+
+    .hero-inner {
+      position: relative;
+      max-width: 780px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 100px;
+      padding: 0.35rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-size: clamp(3.8rem, 8vw, 7.5rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.4s;
+      line-height: 0.95;
+    }
+
+    .hero h1 .accent-line {
+      display: block;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+      font-style: italic;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.6s;
+      line-height: 1.75;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.8s;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--accent2), var(--accent3));
+      color: #fff;
+      padding: 0.85rem 2rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.03em;
+      transition: transform var(--transition), box-shadow var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.08);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,119,255,0.35); }
+    .btn-primary:hover::after { opacity: 1; }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.85rem 2rem;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
+
+    /* hero scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 1.2s;
+    }
+
+    .hero-scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollLine 1.5s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0%   { transform: scaleY(0); transform-origin: top; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      51%  { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── TRUST BAR ─────────────────────────────────────────── */
+    .trust-bar {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      padding: 1.4rem 5%;
+      overflow: hidden;
+    }
+
+    .trust-track {
+      display: flex;
+      gap: 4rem;
+      animation: marquee 25s linear infinite;
+      width: max-content;
+    }
+
+    .trust-track span {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .trust-track span::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── SECTION COMMON ────────────────────────────────────── */
+    section { padding: 100px 5%; }
+
+    .section-label {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+      line-height: 1;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 1.05rem;
+      font-weight: 300;
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 3.5rem;
+    }
+
+    /* ─── STATS ─────────────────────────────────────────────── */
+    .stats {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 70px 5%;
+    }
+
+    .stats-inner {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .stat-item {
+      text-align: center;
+      position: relative;
+    }
+
+    .stat-item::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 20%; bottom: 20%;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .stat-item:last-child::after { display: none; }
+
+    .stat-number {
+      font-family: var(--mono);
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      line-height: 1;
+      margin-bottom: 0.6rem;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── SERVICES PILLARS ───────────────────────────────────── */
+    .services { background: var(--bg); }
+
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    /* tab strip */
+    .pillar-tabs {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 2px;
+      flex-wrap: wrap;
+    }
+
+    .pillar-tab {
+      flex: 1;
+      min-width: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 1.2rem;
+      background: var(--bg2);
+      border: none;
+      border-right: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--body);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      position: relative;
+    }
+
+    .pillar-tab:last-child { border-right: none; }
+
+    .pillar-tab::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transition: transform var(--transition);
+    }
+
+    .pillar-tab:hover { background: var(--bg3); color: var(--text); }
+    .pillar-tab.active { background: var(--bg3); color: var(--text); }
+    .pillar-tab.active::after { transform: scaleX(1); }
+
+    .pillar-tab-icon { display: flex; align-items: center; color: inherit; }
+    .pillar-tab.active .pillar-tab-icon { color: var(--accent); }
+
+    /* panels */
+    .pillar-panels {
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+
+    .pillar-panel {
+      display: none;
+      grid-template-columns: 320px 1fr;
+      gap: 0;
+    }
+
+    .pillar-panel.active { display: grid; }
+
+    .pillar-panel-left {
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      padding: 2.8rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pillar-panel-icon {
+      width: 52px; height: 52px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,119,255,0.08);
+      border: 1px solid rgba(0,119,255,0.18);
+      margin-bottom: 1.5rem;
+    }
+
+    .pillar-panel-num {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .pillar-panel-left h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.9rem;
+      line-height: 1.3;
+    }
+
+    .pillar-panel-left > p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.75;
+      font-weight: 300;
+      font-style: italic;
+      flex: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .pillar-panel-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .pillar-panel-right {
+      background: var(--bg);
+      padding: 2.2rem 2.5rem;
+    }
+
+    /* service list inside panel */
+    .service-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .service-list li {
+      display: grid;
+      grid-template-columns: 10px 1fr;
+      grid-template-rows: auto auto;
+      column-gap: 1rem;
+      row-gap: 0.15rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+
+    .service-list li:last-child { border-bottom: none; }
+    .service-list li:hover { padding-left: 0.3rem; }
+
+    .sl-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 0.45rem;
+      flex-shrink: 0;
+      grid-row: 1;
+      grid-column: 1;
+      align-self: start;
+    }
+
+    .sl-name {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text);
+      grid-row: 1;
+      grid-column: 2;
+      line-height: 1.4;
+    }
+
+    .sl-desc {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.5;
+      grid-row: 2;
+      grid-column: 2;
+    }
+
+    @media (max-width: 900px) {
+      .pillar-panel { grid-template-columns: 1fr; }
+      .pillar-panel-left { border-right: none; border-bottom: 1px solid var(--border); }
+      .pillar-tab { min-width: 100px; font-size: 0.75rem; padding: 0.8rem 0.6rem; }
+    }
+
+    @media (max-width: 600px) {
+      .pillar-tabs { flex-direction: column; }
+      .pillar-tab { border-right: none; border-bottom: 1px solid var(--border); }
+      .pillar-tab:last-child { border-bottom: none; }
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 100px;
+      background: rgba(0,212,255,0.06);
+      border: 1px solid rgba(0,212,255,0.15);
+      color: var(--accent);
+    }
+
+    /* ─── APPROACH / PROCESS ────────────────────────────────── */
+    .approach { background: var(--bg2); }
+
+    .approach-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .approach-steps { display: flex; flex-direction: column; gap: 0; }
+
+    .step {
+      display: flex;
+      gap: 1.5rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      opacity: 0.45;
+      transition: opacity var(--transition);
+      cursor: default;
+    }
+
+    .step:first-child { padding-top: 0; }
+    .step:last-child { border-bottom: none; }
+    .step:hover { opacity: 1; }
+
+    .step-num {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      padding-top: 0.2rem;
+      flex-shrink: 0;
+    }
+
+    .step-content h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .step-content p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* approach visual panel */
+    .approach-visual {
+      position: sticky;
+      top: 100px;
+    }
+
+    .approach-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .approach-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,119,255,0.05), rgba(123,47,255,0.05));
+    }
+
+    .approach-card-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .compliance-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .compliance-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1.2rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: background var(--transition);
+    }
+
+    .compliance-item:hover { background: rgba(0,212,255,0.05); }
+
+    .compliance-status {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+    }
+
+    .status-covered { background: rgba(0,212,255,0.1); color: var(--accent); }
+    .status-advisory { background: rgba(123,47,255,0.1); color: #a77dff; }
+    .status-active { background: rgba(0,200,100,0.1); color: #00c864; }
+
+    /* ─── INSIGHTS / BLOG ────────────────────────────────────── */
+    .insights { background: var(--bg); }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .insight-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .insight-card:hover {
+      border-color: rgba(0,119,255,0.35);
+      transform: translateY(-4px);
+    }
+
+    .insight-thumb {
+      height: 180px;
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .insight-thumb-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.4;
+    }
+
+    .insight-thumb-icon {
+      font-size: 2.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .insight-body {
+      padding: 1.6rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .insight-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .insight-cat {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .insight-date {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .insight-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+    }
+
+    .insight-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .insight-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1.2rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent);
+      transition: gap var(--transition);
+    }
+
+    .insight-link:hover { gap: 0.7rem; }
+
+    /* ─── CTA BANNER ────────────────────────────────────────── */
+    .cta-banner {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 90px 5%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(0,119,255,0.08), transparent 65%);
+      pointer-events: none;
+    }
+
+    .cta-banner h2 {
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+      position: relative;
+      line-height: 1;
+    }
+
+    .cta-banner p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+
+    .cta-banner .btn-primary { position: relative; }
+
+    /* ─── CONTACT ────────────────────────────────────────────── */
+    .contact { background: var(--bg); }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .contact-info h2 {
+      font-size: clamp(2.5rem, 4vw, 3.8rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+      line-height: 1;
+    }
+
+    .contact-info p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contact-detail:last-child { border-bottom: none; }
+
+    .contact-detail-icon {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      background: rgba(0,119,255,0.08);
+      border: 1px solid rgba(0,119,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .contact-detail-text { font-size: 0.88rem; color: var(--muted); }
+    .contact-detail-text strong { display: block; color: var(--text); font-weight: 600; margin-bottom: 0.1rem; }
+
+    /* form */
+    .contact-form {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group:last-of-type { margin-bottom: 0; }
+
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.8rem 1rem;
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 0.9rem;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      width: 100%;
+      -webkit-appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(0,119,255,0.12);
+    }
+
+    .form-group select option { background: var(--bg3); }
+    .form-group textarea { height: 120px; resize: vertical; }
+
+    .form-submit {
+      margin-top: 1.5rem;
+    }
+
+    .form-submit .btn-primary {
+      width: 100%;
+      justify-content: center;
+      padding: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .form-note {
+      margin-top: 0.8rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* form success */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .form-success-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-success h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-success p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 60px 5% 40px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-top: 1rem;
+      max-width: 260px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .footer-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .footer-col ul a {
+      font-size: 0.88rem;
+      color: var(--muted);
+      transition: color var(--transition);
+    }
+
+    .footer-col ul a:hover { color: var(--text); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-bottom p {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .footer-bottom a { color: var(--accent); }
+
+    /* ─── OUTCOMES ───────────────────────────────────────────── */
+    .outcomes {
+      background: var(--bg);
+      padding: 90px 5%;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .outcomes-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .outcomes-left .section-label { margin-bottom: 0.8rem; }
+
+    .outcomes-left h2 {
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 1.2rem;
+    }
+
+    .outcomes-left p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .outcomes-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .outcome-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.3rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      cursor: default;
+      transition: padding-left var(--transition);
+    }
+
+    .outcome-item:first-child { border-top: 1px solid var(--border); }
+
+    .outcome-item:hover { padding-left: 0.5rem; }
+
+    .outcome-num {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      flex-shrink: 0;
+      width: 24px;
+      opacity: 0.7;
+    }
+
+    .outcome-bar {
+      width: 3px;
+      height: 36px;
+      border-radius: 2px;
+      flex-shrink: 0;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .outcome-bar::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 0%;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2));
+      border-radius: 2px;
+      transition: height 0.5s ease;
+    }
+
+    .outcome-item:hover .outcome-bar::after { height: 100%; }
+
+    .outcome-text h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.2rem;
+      color: var(--text);
+      transition: color var(--transition);
+    }
+
+    .outcome-item:hover .outcome-text h3 { color: var(--accent); }
+
+    .outcome-text p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .outcome-arrow {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: 1rem;
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity var(--transition), transform var(--transition);
+      flex-shrink: 0;
+    }
+
+    .outcome-item:hover .outcome-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    @media (max-width: 900px) {
+      .outcomes-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+
+    /* ─── ABRM FRAMEWORK ─────────────────────────────────────── */
+    .abrm {
+      background: var(--bg);
+      padding: 110px 5%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* deep purple-blue atmosphere behind the section */
+    .abrm::before {
+      content: '';
+      position: absolute;
+      width: 800px; height: 800px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(123,47,255,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .abrm-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .abrm-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .abrm-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(123,47,255,0.08);
+      border: 1px solid rgba(123,47,255,0.25);
+      border-radius: 100px;
+      padding: 0.4rem 1.2rem;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #a77dff;
+      margin-bottom: 1.5rem;
+    }
+
+    .abrm-badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #a77dff;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .abrm-header h2 {
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .abrm-header h2 span {
+      background: linear-gradient(90deg, #a77dff, #7b2fff, #0077ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .abrm-header > p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 620px;
+      margin: 0 auto 0.8rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.75;
+    }
+
+    .abrm-tagline {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: #a77dff;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    /* three pillars */
+    .abrm-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: rgba(123,47,255,0.15);
+      border: 1px solid rgba(123,47,255,0.2);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 3rem;
+    }
+
+    .abrm-pillar {
+      background: var(--bg2);
+      padding: 2.8rem 2.2rem;
+      position: relative;
+      transition: background var(--transition);
+    }
+
+    .abrm-pillar:hover { background: var(--bg3); }
+
+    .abrm-pillar::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .abrm-pillar:nth-child(1)::before {
+      background: linear-gradient(90deg, #00d4ff, #0077ff);
+    }
+    .abrm-pillar:nth-child(2)::before {
+      background: linear-gradient(90deg, #7b2fff, #a77dff);
+    }
+    .abrm-pillar:nth-child(3)::before {
+      background: linear-gradient(90deg, #0077ff, #7b2fff);
+    }
+
+    .abrm-pillar-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .abrm-pillar:nth-child(1) .abrm-pillar-label { color: var(--accent); }
+    .abrm-pillar:nth-child(2) .abrm-pillar-label { color: #a77dff; }
+    .abrm-pillar:nth-child(3) .abrm-pillar-label { color: var(--accent2); }
+
+    .abrm-pillar-name {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.3rem;
+      line-height: 1;
+    }
+
+    .abrm-pillar-abbr {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    .abrm-pillar p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    .abrm-pillar-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+
+    /* bottom strip — IP / spec hash reference */
+    .abrm-footer-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1.4rem 2rem;
+      background: rgba(123,47,255,0.05);
+      border: 1px solid rgba(123,47,255,0.15);
+      border-radius: 6px;
+    }
+
+    .abrm-footer-strip p {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .abrm-footer-strip p strong {
+      color: #a77dff;
+      font-weight: 700;
+    }
+
+    .abrm-learn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #a77dff;
+      border: 1px solid rgba(123,47,255,0.3);
+      padding: 0.55rem 1.2rem;
+      border-radius: 4px;
+      transition: background var(--transition), border-color var(--transition);
+      white-space: nowrap;
+    }
+
+    .abrm-learn:hover {
+      background: rgba(123,47,255,0.1);
+      border-color: rgba(123,47,255,0.5);
+    }
+
+    @media (max-width: 768px) {
+      .abrm-pillars { grid-template-columns: 1fr; }
+      .abrm-footer-strip { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ─── WHY ENXIEL ─────────────────────────────────────────── */
+    .why-enxiel {
+      background: var(--bg2);
+      padding: 110px 5%;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .why-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .why-header {
+      max-width: 700px;
+      margin-bottom: 4rem;
+    }
+
+    .why-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .why-abrm-callout {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(123,47,255,0.07);
+      border: 1px solid rgba(123,47,255,0.2);
+      border-radius: 6px;
+      padding: 0.6rem 1.1rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: #a77dff;
+    }
+
+    .why-abrm-icon {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .why-card {
+      background: var(--bg);
+      padding: 2.8rem;
+      transition: background var(--transition);
+      position: relative;
+    }
+
+    .why-card:hover { background: var(--bg3); }
+
+    .why-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .why-card:hover::before { transform: scaleX(1); }
+
+    .why-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+    }
+
+    .why-card-icon {
+      width: 44px; height: 44px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,119,255,0.08);
+      border: 1px solid rgba(0,119,255,0.18);
+    }
+
+    .why-card-num {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+
+    .why-card h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.8rem;
+    }
+
+    .why-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.78;
+      font-weight: 300;
+      margin-bottom: 1.2rem;
+    }
+
+    .why-card-contrast {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-transform: uppercase;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .why-proof {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      padding: 1.5rem 2rem;
+      background: rgba(0,212,255,0.03);
+      border: 1px solid rgba(0,212,255,0.1);
+      border-radius: 6px;
+    }
+
+    .why-proof-item {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    .why-proof-icon {
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .why-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── SCROLL REVEAL ─────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* stagger children */
+    .reveal-stagger > * {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal-stagger.visible > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0s; }
+    .reveal-stagger.visible > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.1s; }
+    .reveal-stagger.visible > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.2s; }
+    .reveal-stagger.visible > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.3s; }
+    .reveal-stagger.visible > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.4s; }
+    .reveal-stagger.visible > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.5s; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .approach-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .approach-visual { position: static; }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      section { padding: 70px 5%; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .stat-item::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ──────────────────────────────────────────────── -->
+  <nav id="nav">
+    <a href="#" class="nav-logo" aria-label="ENXIEL Home">
+      <svg width="148" height="38" viewBox="0 0 148 38" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ENXIEL">
+        <defs>
+          <linearGradient id="ng1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#00d4ff"/>
+            <stop offset="100%" stop-color="#0055ff"/>
+          </linearGradient>
+          <linearGradient id="ng2" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#0055ff" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#00d4ff" stop-opacity="0.15"/>
+          </linearGradient>
+          <clipPath id="nc">
+            <rect x="0" y="0" width="38" height="38" rx="4"/>
+          </clipPath>
+        </defs>
+
+        <!-- ── MARK: cross-boundary signal node ── -->
+        <!-- outer square frame, slightly rounded -->
+        <rect x="1" y="1" width="36" height="36" rx="4" stroke="url(#ng1)" stroke-width="1" fill="url(#ng2)"/>
+
+        <!-- inner grid: 3 horizontal containment rails (Measure/Verify/Contain) -->
+        <line x1="6"  y1="10.5" x2="32" y2="10.5" stroke="#00d4ff" stroke-width="0.6" stroke-opacity="0.35"/>
+        <line x1="6"  y1="19"   x2="32" y2="19"   stroke="#00d4ff" stroke-width="0.6" stroke-opacity="0.35"/>
+        <line x1="6"  y1="27.5" x2="32" y2="27.5" stroke="#00d4ff" stroke-width="0.6" stroke-opacity="0.35"/>
+
+        <!-- vertical center axis -->
+        <line x1="19" y1="4" x2="19" y2="34" stroke="#0077ff" stroke-width="0.6" stroke-opacity="0.3"/>
+
+        <!-- E letterform — bold, geometric, flush left inside mark -->
+        <!-- vertical spine -->
+        <rect x="8" y="10" width="2.2" height="18" fill="url(#ng1)"/>
+        <!-- top bar -->
+        <rect x="8" y="10" width="14" height="2.2" fill="url(#ng1)"/>
+        <!-- mid bar — shorter, offset right: trust/signal asymmetry -->
+        <rect x="8" y="18.9" width="11" height="2.2" fill="url(#ng1)"/>
+        <!-- bottom bar -->
+        <rect x="8" y="25.8" width="14" height="2.2" fill="url(#ng1)"/>
+
+        <!-- signal node — top-right corner: agentic boundary point -->
+        <circle cx="29" cy="9" r="2.8" fill="#00d4ff" opacity="0.9"/>
+        <circle cx="29" cy="9" r="5"   fill="none" stroke="#00d4ff" stroke-width="0.8" stroke-opacity="0.35"/>
+
+        <!-- micro tick marks at right edge: attestation marks -->
+        <line x1="33" y1="14" x2="36" y2="14" stroke="#00d4ff" stroke-width="1.2" stroke-opacity="0.7" stroke-linecap="round"/>
+        <line x1="33" y1="19" x2="36" y2="19" stroke="#00d4ff" stroke-width="1.2" stroke-opacity="0.5" stroke-linecap="round"/>
+        <line x1="33" y1="24" x2="36" y2="24" stroke="#00d4ff" stroke-width="1.2" stroke-opacity="0.3" stroke-linecap="round"/>
+
+        <!-- ── WORDMARK ── -->
+        <text x="46" y="25"
+          font-family="'Space Mono', 'Courier New', monospace"
+          font-size="17"
+          font-weight="700"
+          letter-spacing="3.5"
+          fill="url(#ng1)"
+          text-anchor="start">ENXIEL</text>
+      </svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#approach">Approach</a></li>
+      <li><a href="#why">Why ENXIEL</a></li>
+      <li><a href="#insights">Insights</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="nav-cta">Request Assessment</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#services" class="mobile-link">Services</a>
+    <a href="#approach" class="mobile-link">Approach</a>
+    <a href="#insights" class="mobile-link">Insights</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+    <a href="#contact" class="nav-cta mobile-link">Request Assessment →</a>
+  </div>
+
+  <!-- ─── HERO ──────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+    <div class="hero-glow hero-glow-3"></div>
+
+    <div class="hero-inner">
+      <h1>
+        Cybersecurity<br>
+        <span class="accent-line">IT / OT Resilience</span>
+        AI Governance
+      </h1>
+      <p>We help critical infrastructure organizations move from compliance checkbox to operational resilience — with advisory services built for the real threat landscape.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn-primary">Start Building Resilience →</a>
+        <a href="#services" class="btn-ghost">Explore Services</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      Scroll
+    </div>
+  </header>
+
+  <!-- ─── TRUST BAR ─────────────────────────────────────────── -->
+  <div class="trust-bar">
+    <div class="trust-track" aria-hidden="true">
+      <span>NIST CSF 2.0</span>
+      <span>NERC CIP</span>
+      <span>IEC 62443</span>
+      <span>FISMA</span>
+      <span>SOC 2 Type II</span>
+      <span>ISO 27001</span>
+      <span>CMMC 2.0</span>
+      <span>HIPAA</span>
+      <span>AI Risk Management</span>
+      <span>Zero Trust Architecture</span>
+      <!-- duplicate for seamless loop -->
+      <span>NIST CSF 2.0</span>
+      <span>NERC CIP</span>
+      <span>IEC 62443</span>
+      <span>FISMA</span>
+      <span>SOC 2 Type II</span>
+      <span>ISO 27001</span>
+      <span>CMMC 2.0</span>
+      <span>HIPAA</span>
+      <span>AI Risk Management</span>
+      <span>Zero Trust Architecture</span>
+    </div>
+  </div>
+
+  <!-- ─── OUTCOMES ────────────────────────────────────────────── -->
+  <section class="outcomes">
+    <div class="outcomes-inner">
+
+      <div class="outcomes-left reveal">
+        <div class="section-label">What We Deliver</div>
+        <h2>What We Help Organizations Achieve</h2>
+        <p>Every engagement is measured against real outcomes — not deliverable counts. This is what changes after working with ENXIEL.</p>
+      </div>
+
+      <div class="outcomes-grid reveal-stagger">
+
+        <div class="outcome-item">
+          <div class="outcome-num">01</div>
+          <div class="outcome-bar"></div>
+          <div class="outcome-text">
+            <h3>Govern AI Responsibly</h3>
+            <p>Deploy AI with accountability structures, risk registers, and governance frameworks built for real-world audit and board scrutiny.</p>
+          </div>
+          <div class="outcome-arrow">→</div>
+        </div>
+
+        <div class="outcome-item">
+          <div class="outcome-num">02</div>
+          <div class="outcome-bar"></div>
+          <div class="outcome-text">
+            <h3>Reduce Cyber Risk</h3>
+            <p>Identify and close the gaps that matter — ranked by business impact, not theoretical severity scores.</p>
+          </div>
+          <div class="outcome-arrow">→</div>
+        </div>
+
+        <div class="outcome-item">
+          <div class="outcome-num">03</div>
+          <div class="outcome-bar"></div>
+          <div class="outcome-text">
+            <h3>Strengthen Operational Resilience</h3>
+            <p>Build IT/OT environments that absorb disruption and recover fast — with validated continuity plans and tested controls.</p>
+          </div>
+          <div class="outcome-arrow">→</div>
+        </div>
+
+        <div class="outcome-item">
+          <div class="outcome-num">04</div>
+          <div class="outcome-bar"></div>
+          <div class="outcome-text">
+            <h3>Accelerate Secure Transformation</h3>
+            <p>Adopt new technologies — cloud, AI, OT convergence — without outpacing your security posture or regulatory obligations.</p>
+          </div>
+          <div class="outcome-arrow">→</div>
+        </div>
+
+        <div class="outcome-item">
+          <div class="outcome-num">05</div>
+          <div class="outcome-bar"></div>
+          <div class="outcome-text">
+            <h3>Improve Regulatory Confidence</h3>
+            <p>Walk into audits prepared. Build programs that satisfy regulators and hold up under scrutiny — not just on paper.</p>
+          </div>
+          <div class="outcome-arrow">→</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── STATS ─────────────────────────────────────────────── -->
+  <section class="stats">
+    <div class="stats-inner reveal-stagger">
+      <div class="stat-item">
+        <span class="stat-number" data-count="73">0</span>
+        <span class="stat-label">% of ICS environments have unpatched critical vulnerabilities</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-count="287">0</span>
+        <span class="stat-label">Average days to detect a breach in OT environments</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-prefix="$" data-count="4.9" data-decimal="true">$0</span>
+        <span class="stat-label">Million average cost of a critical infrastructure breach</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-count="100">0</span>
+        <span class="stat-label">% of engagements meet compliance targets on schedule</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SERVICES ──────────────────────────────────────────── -->
+  <section class="services" id="services">
+    <div class="services-header reveal">
+      <div>
+        <div class="section-label">Our Services</div>
+        <h2 class="section-title">Six Practice Areas.<br>One Accountable Partner.</h2>
+        <p class="section-sub">Advisory-led, outcome-driven engagements across the full spectrum of organizational security, governance, and resilience — delivered with the depth of a specialized firm and the agility your organization actually needs.</p>
+      </div>
+      <a href="#contact" class="btn-ghost">Schedule a Consultation →</a>
+    </div>
+
+    <!-- pillar tabs -->
+    <div class="pillar-tabs reveal">
+      <button class="pillar-tab active" data-tab="0">
+        <span class="pillar-tab-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </span>
+        Cybersecurity
+      </button>
+      <button class="pillar-tab" data-tab="1">
+        <span class="pillar-tab-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </span>
+        GRC
+      </button>
+      <button class="pillar-tab" data-tab="2">
+        <span class="pillar-tab-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </span>
+        IT / OT Security
+      </button>
+      <button class="pillar-tab" data-tab="3">
+        <span class="pillar-tab-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </span>
+        Resilience
+      </button>
+      <button class="pillar-tab" data-tab="4">
+        <span class="pillar-tab-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        </span>
+        Tech Enablement
+      </button>
+      <button class="pillar-tab" data-tab="5">
+        <span class="pillar-tab-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </span>
+        Strategy & Advisory
+      </button>
+    </div>
+
+    <!-- pillar panels -->
+    <div class="pillar-panels">
+
+      <!-- 1: Cybersecurity -->
+      <div class="pillar-panel active" data-panel="0">
+        <div class="pillar-panel-left">
+          <div class="pillar-panel-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#pp1)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="pp1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0077ff"/></linearGradient></defs><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="pillar-panel-num">01</div>
+          <h3>Cybersecurity</h3>
+          <p>Protecting digital assets, business operations, and the people who depend on them — through strategic advisory, not reactive tooling.</p>
+          <div class="pillar-panel-tags">
+            <span class="tag">NIST CSF 2.0</span>
+            <span class="tag">ISO 27001</span>
+            <span class="tag">CIS Controls</span>
+            <span class="tag">vCISO</span>
+          </div>
+        </div>
+        <div class="pillar-panel-right">
+          <ul class="service-list">
+            <li><span class="sl-dot"></span><span class="sl-name">Cybersecurity Assessments</span><span class="sl-desc">End-to-end evaluations of your security posture against leading frameworks</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Security Architecture Reviews</span><span class="sl-desc">Validate that your architecture is designed to contain, detect, and recover</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Risk Assessments</span><span class="sl-desc">Business-contextualized risk identification ranked by operational impact</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Security Program Development</span><span class="sl-desc">Build or mature a security program that scales with your organization</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">vCISO Services</span><span class="sl-desc">Executive-level security leadership on demand — strategy, board reporting, oversight</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Security Awareness Training</span><span class="sl-desc">Role-based programs that build a security-conscious culture from the ground up</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Security Roadmaps</span><span class="sl-desc">Prioritized, budget-aligned plans that turn risk findings into executable action</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2: GRC -->
+      <div class="pillar-panel" data-panel="1">
+        <div class="pillar-panel-left">
+          <div class="pillar-panel-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#pp2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="pp2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0077ff"/></linearGradient></defs><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="pillar-panel-num">02</div>
+          <h3>Governance, Risk & Compliance</h3>
+          <p>Creating accountability, oversight, and regulatory confidence — so your organization leads with trust, not reacts to audits.</p>
+          <div class="pillar-panel-tags">
+            <span class="tag">NIST CSF 2.0</span>
+            <span class="tag">CIS v8.1</span>
+            <span class="tag">ISO 27001</span>
+            <span class="tag">ISO 42001</span>
+            <span class="tag">SOC 2</span>
+            <span class="tag">NERC CIP</span>
+          </div>
+        </div>
+        <div class="pillar-panel-right">
+          <ul class="service-list">
+            <li><span class="sl-dot"></span><span class="sl-name">Enterprise Risk Management</span><span class="sl-desc">Holistic risk frameworks that connect security risk to business strategy and executive decisions</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Cyber Risk Assessments</span><span class="sl-desc">Business-contextualized risk identification ranked by operational and financial impact</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">AI Risk Assessments</span><span class="sl-desc">Structured evaluations of AI system risk aligned to NIST AI RMF, ISO 42001, and ABRM™</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Third-Party Risk Management</span><span class="sl-desc">Vendor and supply chain risk programs that extend your security perimeter</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Governance Framework Design</span><span class="sl-desc">Custom architectures aligned to NIST CSF 2.0, CIS Controls v8.1, ISO 27001, and sector standards</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Compliance Programs</span><span class="sl-desc">Programs covering ISO 27001, ISO 42001, SOC 2, NERC CIP, CMMC 2.0, FISMA, and HIPAA</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Internal Audits & Gap Assessments</span><span class="sl-desc">Independent evaluations that surface real gaps — not theoretical findings — with clear remediation paths</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Audit Readiness</span><span class="sl-desc">Evidence packages, control testing, and pre-audit preparation that eliminates surprises</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Policy, Standard & Procedure Development</span><span class="sl-desc">Governance documentation built for operations — not shelves — that auditors and regulators accept</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3: IT/OT -->
+      <div class="pillar-panel" data-panel="2">
+        <div class="pillar-panel-left">
+          <div class="pillar-panel-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#pp3)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="pp3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0077ff"/></linearGradient></defs><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          </div>
+          <div class="pillar-panel-num">03</div>
+          <h3>IT / OT & Operational Security</h3>
+          <p>Where most consulting firms are weak — and where ENXIEL has a genuine differentiator. Securing the environments that keep the world running.</p>
+          <div class="pillar-panel-tags">
+            <span class="tag">IEC 62443</span>
+            <span class="tag">NERC CIP</span>
+            <span class="tag">ICS / SCADA</span>
+            <span class="tag">Cyber-Physical</span>
+          </div>
+        </div>
+        <div class="pillar-panel-right">
+          <ul class="service-list">
+            <li><span class="sl-dot"></span><span class="sl-name">IT Security Assessments</span><span class="sl-desc">Comprehensive evaluation of enterprise IT environments, networks, and control effectiveness</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">OT Security Assessments</span><span class="sl-desc">Purpose-built assessments for operational technology environments and industrial networks</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Security Architecture Reviews & Posture Analysis</span><span class="sl-desc">Validate that your converged IT/OT architecture is designed to contain, detect, and recover</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Critical Asset Identification</span><span class="sl-desc">Define and prioritize the assets your operations — and your mission — cannot afford to lose</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">ICS / SCADA Security Reviews</span><span class="sl-desc">Deep-dive reviews of industrial control systems against IEC 62443 and sector standards</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">NERC CIP Readiness</span><span class="sl-desc">Compliance gap analysis and remediation support for bulk electric system operators</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Operational Technology Governance</span><span class="sl-desc">Governance frameworks that bring policy, oversight, and accountability to OT environments</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Cyber Resilience Programs</span><span class="sl-desc">Structured programs that build sustained resilience across converged IT/OT environments</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Cyber-Physical Security Governance</span><span class="sl-desc">Governance that bridges IT security policy with the physical and operational realities of your environment</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 4: Resilience -->
+      <div class="pillar-panel" data-panel="3">
+        <div class="pillar-panel-left">
+          <div class="pillar-panel-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#pp4)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="pp4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0077ff"/></linearGradient></defs><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <div class="pillar-panel-num">04</div>
+          <h3>Resilience & Validation</h3>
+          <p>Resilience is not declared — it is tested, validated, and continuously improved. We put your plans under pressure before an adversary does.</p>
+          <div class="pillar-panel-tags">
+            <span class="tag">BC / DR</span>
+            <span class="tag">Tabletop Exercises</span>
+            <span class="tag">IR Validation</span>
+            <span class="tag">Crisis Management</span>
+          </div>
+        </div>
+        <div class="pillar-panel-right">
+          <ul class="service-list">
+            <li><span class="sl-dot"></span><span class="sl-name">Cyber Resilience Testing</span><span class="sl-desc">Structured testing of your organization's ability to absorb, adapt, and recover from cyber events</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Tabletop Exercises</span><span class="sl-desc">Scenario-driven exercises that stress-test leadership decisions before an incident forces them</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Incident Response Exercises</span><span class="sl-desc">Functional IR exercises that validate your team's readiness and expose critical gaps</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Business Continuity Planning</span><span class="sl-desc">Continuity programs built around your real operational dependencies — not templates</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Disaster Recovery Validation</span><span class="sl-desc">Test that your DR plans actually work at the recovery time objectives that matter</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Recovery Testing</span><span class="sl-desc">Hands-on validation of backup, restore, and failover procedures under realistic conditions</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Crisis Management Exercises</span><span class="sl-desc">Executive and board-level simulations that build decision-making muscle before a real crisis</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Operational Resilience Assessments</span><span class="sl-desc">End-to-end assessments of your organization's capacity to deliver critical services under disruption</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 5: Tech Enablement -->
+      <div class="pillar-panel" data-panel="4">
+        <div class="pillar-panel-left">
+          <div class="pillar-panel-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#pp5)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="pp5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0077ff"/></linearGradient></defs><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          </div>
+          <div class="pillar-panel-num">05</div>
+          <h3>Technology Enablement & Transformation</h3>
+          <p>The piece that makes ENXIEL feel modern and strategic — helping organizations adopt innovation without outpacing their security posture or governance maturity.</p>
+          <div class="pillar-panel-tags">
+            <span class="tag">AI Adoption</span>
+            <span class="tag">Cloud Transformation</span>
+            <span class="tag">NIST AI RMF</span>
+            <span class="tag">ABRM™</span>
+          </div>
+        </div>
+        <div class="pillar-panel-right">
+          <ul class="service-list">
+            <li><span class="sl-dot"></span><span class="sl-name">Secure Digital Transformation</span><span class="sl-desc">Security-by-design advisory for cloud migration, modernization, and digital programs</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">AI Adoption Governance</span><span class="sl-desc">Governance frameworks — including ABRM™ — that make AI adoption accountable and auditable</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Technology Governance</span><span class="sl-desc">Oversight structures that give leadership visibility and control over technology decisions</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Emerging Technology Risk Assessments</span><span class="sl-desc">Risk evaluations for AI, IoT, cloud-native, and autonomous systems before deployment</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Secure Development Governance</span><span class="sl-desc">Governance guardrails for development organizations adopting AI-assisted and agentic tooling</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Transformation Program Advisory</span><span class="sl-desc">Embedded advisory across large-scale transformation programs to maintain security alignment</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Technology Enablement Frameworks</span><span class="sl-desc">Custom frameworks that operationalize technology governance across business units</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 6: Strategy & Advisory -->
+      <div class="pillar-panel" data-panel="5">
+        <div class="pillar-panel-left">
+          <div class="pillar-panel-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#pp6)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="pp6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0077ff"/></linearGradient></defs><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <div class="pillar-panel-num">06</div>
+          <h3>Strategy & Advisory</h3>
+          <p>Executive-level counsel that translates complex security and technology risk into business language — for leaders who need to act, not just understand.</p>
+          <div class="pillar-panel-tags">
+            <span class="tag">vCISO</span>
+            <span class="tag">Board Reporting</span>
+            <span class="tag">Executive Advisory</span>
+            <span class="tag">AI Governance</span>
+          </div>
+        </div>
+        <div class="pillar-panel-right">
+          <ul class="service-list">
+            <li><span class="sl-dot"></span><span class="sl-name">vCISO Services</span><span class="sl-desc">Fractional CISO leadership on demand — strategy, program ownership, board-level communication</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Executive Advisory</span><span class="sl-desc">Trusted counsel for C-suite and senior leadership navigating complex security and technology decisions</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Board Reporting & Cyber Risk Communication</span><span class="sl-desc">Translate technical risk into financial and operational impact that boards can act on</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Cybersecurity Roadmaps</span><span class="sl-desc">Multi-year security strategies aligned to business goals, risk appetite, and budget realities</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">AI Governance Programs</span><span class="sl-desc">End-to-end governance programs for AI adoption — policies, oversight structures, risk registers</span></li>
+            <li><span class="sl-dot"></span><span class="sl-name">Secure Digital Transformation Advisory</span><span class="sl-desc">Strategic advisory ensuring transformation initiatives don't outpace security posture or governance maturity</span></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── APPROACH ──────────────────────────────────────────── -->
+  <section class="approach" id="approach">
+    <div class="approach-inner">
+      <div>
+        <div class="section-label reveal">Our Approach</div>
+        <h2 class="section-title reveal">From Compliance to Operational Resilience</h2>
+        <p class="section-sub reveal">We don't hand you a 200-page report and disappear. Our advisory model is built around embedded partnership and measurable outcomes.</p>
+
+        <div class="approach-steps">
+          <div class="step reveal">
+            <div class="step-num">01</div>
+            <div class="step-content">
+              <h3>Discovery & Scoping</h3>
+              <p>We map your current environment, regulatory obligations, and risk appetite before recommending anything.</p>
+            </div>
+          </div>
+          <div class="step reveal">
+            <div class="step-num">02</div>
+            <div class="step-content">
+              <h3>Risk Assessment & Gap Analysis</h3>
+              <p>Structured evaluation against applicable frameworks identifies real gaps — not theoretical ones — with business context attached.</p>
+            </div>
+          </div>
+          <div class="step reveal">
+            <div class="step-num">03</div>
+            <div class="step-content">
+              <h3>Roadmap & Prioritization</h3>
+              <p>A risk-ranked remediation roadmap tied to your budget cycle, not an idealized wishlist.</p>
+            </div>
+          </div>
+          <div class="step reveal">
+            <div class="step-num">04</div>
+            <div class="step-content">
+              <h3>Implementation Support</h3>
+              <p>We stay embedded through remediation, vendor selection, and control implementation — not just advisory.</p>
+            </div>
+          </div>
+          <div class="step reveal">
+            <div class="step-num">05</div>
+            <div class="step-content">
+              <h3>Validation & Continuous Improvement</h3>
+              <p>Ongoing validation ensures controls are operating effectively, with metrics that prove it to leadership and auditors.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="approach-visual reveal">
+        <div class="approach-card">
+          <div class="approach-card-label">Industries & Frameworks Served</div>
+          <div class="compliance-list">
+
+            <div class="compliance-item">
+              <span style="display:flex;align-items:center;gap:0.6rem;">
+                <span style="font-size:0.65rem;letter-spacing:0.1em;color:var(--muted);font-family:var(--mono);min-width:80px;">ENERGY / OT</span>
+                NERC CIP · IEC 62443
+              </span>
+              <span class="compliance-status status-covered">Covered</span>
+            </div>
+
+            <div class="compliance-item">
+              <span style="display:flex;align-items:center;gap:0.6rem;">
+                <span style="font-size:0.65rem;letter-spacing:0.1em;color:var(--muted);font-family:var(--mono);min-width:80px;">DEFENSE</span>
+                CMMC 2.0 · NIST 800-171
+              </span>
+              <span class="compliance-status status-covered">Covered</span>
+            </div>
+
+            <div class="compliance-item">
+              <span style="display:flex;align-items:center;gap:0.6rem;">
+                <span style="font-size:0.65rem;letter-spacing:0.1em;color:var(--muted);font-family:var(--mono);min-width:80px;">HEALTHCARE</span>
+                HIPAA · HItrust · SOC 2
+              </span>
+              <span class="compliance-status status-covered">Covered</span>
+            </div>
+
+            <div class="compliance-item">
+              <span style="display:flex;align-items:center;gap:0.6rem;">
+                <span style="font-size:0.65rem;letter-spacing:0.1em;color:var(--muted);font-family:var(--mono);min-width:80px;">FINANCE</span>
+                SOX · PCI DSS · GLBA
+              </span>
+              <span class="compliance-status status-covered">Covered</span>
+            </div>
+
+            <div class="compliance-item">
+              <span style="display:flex;align-items:center;gap:0.6rem;">
+                <span style="font-size:0.65rem;letter-spacing:0.1em;color:var(--muted);font-family:var(--mono);min-width:80px;">GOVERNMENT</span>
+                FISMA · FedRAMP · NIST CSF
+              </span>
+              <span class="compliance-status status-covered">Covered</span>
+            </div>
+
+            <div class="compliance-item">
+              <span style="display:flex;align-items:center;gap:0.6rem;">
+                <span style="font-size:0.65rem;letter-spacing:0.1em;color:var(--muted);font-family:var(--mono);min-width:80px;">ENTERPRISE</span>
+                ISO 27001 · ISO 42001 · SOC 2 · CIS v8.1
+              </span>
+              <span class="compliance-status status-covered">Covered</span>
+            </div>
+
+            <div class="compliance-item">
+              <span style="display:flex;align-items:center;gap:0.6rem;">
+                <span style="font-size:0.65rem;letter-spacing:0.1em;color:var(--muted);font-family:var(--mono);min-width:80px;">AI / EMERGING</span>
+                NIST AI RMF · EU AI Act
+              </span>
+              <span class="compliance-status status-active">Active Practice</span>
+            </div>
+
+            <div class="compliance-item" style="border:1px solid rgba(123,47,255,0.3);background:rgba(123,47,255,0.05);border-radius:6px;margin-top:0.5rem;">
+              <span style="display:flex;align-items:center;gap:0.6rem;">
+                <span style="font-size:0.65rem;letter-spacing:0.1em;color:#a77dff;font-family:var(--mono);min-width:80px;">PROPRIETARY</span>
+                <span style="color:var(--text);font-weight:600;">ABRM™ Framework</span>
+              </span>
+              <span class="compliance-status" style="background:rgba(123,47,255,0.15);color:#a77dff;">Flagship IP</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── INSIGHTS ──────────────────────────────────────────── -->
+  <section class="insights" id="insights">
+    <div class="reveal">
+      <div class="section-label">Insights</div>
+      <h2 class="section-title">From the Field</h2>
+      <p class="section-sub">Field-tested perspectives on the threats, regulations, and decisions shaping critical infrastructure security today.</p>
+    </div>
+
+    <div class="insights-grid reveal-stagger">
+      <article class="insight-card">
+        <div class="insight-thumb">
+          <div class="insight-thumb-bg" style="background: linear-gradient(135deg, #0d2a4a, #0a1628);"></div>
+          <div class="insight-thumb-icon">⚙️</div>
+        </div>
+        <div class="insight-body">
+          <div class="insight-meta">
+            <span class="insight-cat">OT Security</span>
+            <span class="insight-date">May 2025</span>
+          </div>
+          <h3>IEC 62443 vs NERC CIP: Choosing the Right Framework for Your OT Environment</h3>
+          <p>A practical comparison to help security leaders determine which standard best fits their industrial control systems and regulatory obligations.</p>
+          <a href="#" class="insight-link">Read More →</a>
+        </div>
+      </article>
+
+      <article class="insight-card">
+        <div class="insight-thumb">
+          <div class="insight-thumb-bg" style="background: linear-gradient(135deg, #1a0d3a, #0d0a28);"></div>
+          <div class="insight-thumb-icon">🤖</div>
+        </div>
+        <div class="insight-body">
+          <div class="insight-meta">
+            <span class="insight-cat">AI Governance</span>
+            <span class="insight-date">Apr 2025</span>
+          </div>
+          <h3>Building an AI Risk Register: A Practitioner's Guide to NIST AI RMF</h3>
+          <p>Step-by-step guidance for operationalizing the NIST AI Risk Management Framework — from initial scoping to board-level reporting.</p>
+          <a href="#" class="insight-link">Read More →</a>
+        </div>
+      </article>
+
+      <article class="insight-card">
+        <div class="insight-thumb">
+          <div class="insight-thumb-bg" style="background: linear-gradient(135deg, #0a2a1a, #061a0e);"></div>
+          <div class="insight-thumb-icon">🛡️</div>
+        </div>
+        <div class="insight-body">
+          <div class="insight-meta">
+            <span class="insight-cat">GRC</span>
+            <span class="insight-date">Mar 2025</span>
+          </div>
+          <h3>CMMC 2.0 Readiness: What Defense Contractors Still Get Wrong</h3>
+          <p>The most common gaps we see in CMMC 2.0 readiness assessments — and what organizations need to address before their next audit cycle.</p>
+          <a href="#" class="insight-link">Read More →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ─── ABRM FRAMEWORK ───────────────────────────────────────── -->
+  <section class="abrm" id="abrm">
+    <div class="abrm-inner">
+
+      <div class="abrm-header reveal">
+        <div class="abrm-badge">
+          <div class="abrm-badge-dot"></div>
+          Flagship Framework · Proprietary IP
+        </div>
+        <h2>The <span>ABRM™</span> Framework</h2>
+        <p>The governance architecture for autonomous systems and emerging technologies — built to quantify, verify, and contain agentic risk at every layer of your organization.</p>
+        <div class="abrm-tagline">Agentic Blast Radius & Micro-Attestation</div>
+      </div>
+
+      <div class="abrm-pillars reveal-stagger">
+
+        <div class="abrm-pillar">
+          <span class="abrm-pillar-icon">📡</span>
+          <div class="abrm-pillar-label">Pillar One · ABR</div>
+          <div class="abrm-pillar-name">Measure</div>
+          <span class="abrm-pillar-abbr">Agentic Blast Radius</span>
+          <p>Real-time calculation of potential impact across distributed autonomous systems. Know the blast radius before an agent acts — not after.</p>
+        </div>
+
+        <div class="abrm-pillar">
+          <span class="abrm-pillar-icon">🔐</span>
+          <div class="abrm-pillar-label">Pillar Two · MA</div>
+          <div class="abrm-pillar-name">Verify</div>
+          <span class="abrm-pillar-abbr">Micro-Attestation</span>
+          <p>Mandatory cryptographic proof for every atomic action taken by an agent. Every decision is signed, traceable, and auditable by design.</p>
+        </div>
+
+        <div class="abrm-pillar">
+          <span class="abrm-pillar-icon">⛓️</span>
+          <div class="abrm-pillar-label">Pillar Three · CTRL</div>
+          <div class="abrm-pillar-name">Contain</div>
+          <span class="abrm-pillar-abbr">Boundary Enforcement</span>
+          <p>Standardized enforcement of logical and physical security boundaries. Autonomous systems operate within defined, validated limits — no exceptions.</p>
+        </div>
+
+      </div>
+
+      <div class="abrm-footer-strip reveal">
+        <p><strong>ABRM™</strong> &nbsp;·&nbsp; Industry's first governance framework for autonomous AI risk &nbsp;·&nbsp; SPEC HASH: 7F88…AD21</p>
+        <a href="https://www.abrmframework.com/" target="_blank" rel="noopener" class="abrm-learn">Explore the Framework →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── WHY ENXIEL ───────────────────────────────────────────── -->
+  <section class="why-enxiel" id="why">
+    <div class="why-inner">
+
+      <div class="why-header reveal">
+        <div class="section-label">Why ENXIEL</div>
+        <h2 class="section-title">Built Different.<br><span style="background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">For What's Coming Next.</span></h2>
+        <p class="why-sub">Most security firms were built for yesterday's threat landscape. ENXIEL was built for autonomous systems, AI-driven risk, and the operational complexity of organizations that can't afford to fail.</p>
+        <div class="why-abrm-callout">
+          <span class="why-abrm-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a77dff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </span>
+          <span>Prepare for Autonomous Risk Before It Becomes Operational Risk</span>
+        </div>
+      </div>
+
+      <div class="why-grid reveal-stagger">
+
+        <div class="why-card">
+          <div class="why-card-header">
+            <div class="why-card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#wc1)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="wc1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0077ff"/></linearGradient></defs><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <div class="why-card-num">01</div>
+          </div>
+          <h3>Governance-First</h3>
+          <p>Security bolted on after the fact is liability, not protection. Every ENXIEL engagement starts with governance — accountability, ownership, and policy — before technology or tooling is ever discussed.</p>
+          <div class="why-card-contrast">Not security bolted on later.</div>
+        </div>
+
+        <div class="why-card">
+          <div class="why-card-header">
+            <div class="why-card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#wc2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="wc2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0077ff"/></linearGradient></defs><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1" fill="url(#wc2)" stroke="none"/></svg>
+            </div>
+            <div class="why-card-num">02</div>
+          </div>
+          <h3>AI-Native</h3>
+          <p>ENXIEL was built specifically for the age of autonomous systems. The ABRM™ framework is the industry's first governance model designed to measure, verify, and contain agentic risk — before it operationalizes into damage.</p>
+          <div class="why-card-contrast">Built for autonomous systems, not just cloud apps.</div>
+        </div>
+
+        <div class="why-card">
+          <div class="why-card-header">
+            <div class="why-card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#wc3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="wc3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0077ff"/></linearGradient></defs><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+            </div>
+            <div class="why-card-num">03</div>
+          </div>
+          <h3>Operationally Grounded</h3>
+          <p>Theory doesn't stop a SCADA attack. Our advisors understand industrial control systems, converged IT/OT environments, and the uptime constraints that make standard security advice impractical — or dangerous.</p>
+          <div class="why-card-contrast">Designed for real-world environments, not just cloud.</div>
+        </div>
+
+        <div class="why-card">
+          <div class="why-card-header">
+            <div class="why-card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#wc4)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="wc4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0077ff"/></linearGradient></defs><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/></svg>
+            </div>
+            <div class="why-card-num">04</div>
+          </div>
+          <h3>Executive Focused</h3>
+          <p>Risk that cannot be communicated to a board cannot be governed. ENXIEL translates technical complexity into the financial and operational language executives need to make confident decisions and defend them under scrutiny.</p>
+          <div class="why-card-contrast">Risk translated into business decisions.</div>
+        </div>
+
+      </div>
+
+      <!-- bottom proof strip -->
+      <div class="why-proof reveal">
+        <div class="why-proof-item">
+          <span class="why-proof-icon">✓</span>
+          <span>Advisory-led engagements — no vendor lock-in</span>
+        </div>
+        <div class="why-proof-item">
+          <span class="why-proof-icon">✓</span>
+          <span>Proprietary ABRM™ framework for AI & autonomous risk</span>
+        </div>
+        <div class="why-proof-item">
+          <span class="why-proof-icon">✓</span>
+          <span>IT/OT convergence expertise most firms don't have</span>
+        </div>
+        <div class="why-proof-item">
+          <span class="why-proof-icon">✓</span>
+          <span>Outcomes measured, not just deliverables counted</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── CTA BANNER ────────────────────────────────────────── -->
+  <div class="cta-banner reveal">
+    <h2>Ready to Move Beyond Compliance?</h2>
+    <p>Let's assess where you stand and build a roadmap your team can actually execute.</p>
+    <a href="#contact" class="btn-primary">Request a Free Risk Assessment →</a>
+  </div>
+
+  <!-- ─── CONTACT ───────────────────────────────────────────── -->
+  <section class="contact" id="contact">
+    <div class="contact-inner">
+      <div class="contact-info reveal">
+        <div class="section-label">Contact</div>
+        <h2>Request an Engagement</h2>
+        <p>Tell us about your organization and the challenge you're working through. We'll respond within one business day to discuss fit and next steps.</p>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">✉️</div>
+          <div class="contact-detail-text">
+            <strong>Email</strong>
+            contact@enxiel.com
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📍</div>
+          <div class="contact-detail-text">
+            <strong>Locations</strong>
+            Puerto Rico · Washington D.C. · Remote Nationwide
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">⏱️</div>
+          <div class="contact-detail-text">
+            <strong>Response Time</strong>
+            Within 1 business day
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form reveal">
+        <div id="formWrap">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First Name *</label>
+              <input id="fname" type="text" placeholder="Jane" required>
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name *</label>
+              <input id="lname" type="text" placeholder="Smith">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Business Email *</label>
+            <input id="email" type="email" placeholder="jane@company.com" required>
+          </div>
+          <div class="form-group">
+            <label for="company">Organization *</label>
+            <input id="company" type="text" placeholder="Company or Agency">
+          </div>
+          <div class="form-group">
+            <label for="service">Service of Interest</label>
+            <select id="service">
+              <option value="">Select a service…</option>
+              <option>Cybersecurity Risk Assessment</option>
+              <option>IT / OT / ICS Security Audit</option>
+              <option>GRC & Compliance Program</option>
+              <option>AI Governance Enablement</option>
+              <option>Threat Detection & Response</option>
+              <option>Zero Trust Architecture</option>
+              <option>Other / Not Sure Yet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Describe Your Challenge</label>
+            <textarea id="message" placeholder="What's driving this engagement? Any specific frameworks, deadlines, or incidents?"></textarea>
+          </div>
+          <div class="form-submit">
+            <button class="btn-primary" id="submitBtn" onclick="handleSubmit(event)">
+              Submit Request →
+            </button>
+          </div>
+          <p class="form-note">🔒 Your information is confidential and never shared with third parties.</p>
+        </div>
+
+        <div class="form-success" id="formSuccess">
+          <div class="form-success-icon">✅</div>
+          <h3>Request Received</h3>
+          <p>Thank you. We'll review your submission and reach out within one business day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-top">
+        <div class="footer-brand">
+          <svg width="160" height="42" viewBox="0 0 148 38" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ENXIEL">
+            <defs>
+              <linearGradient id="fg1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00d4ff"/>
+                <stop offset="100%" stop-color="#0055ff"/>
+              </linearGradient>
+              <linearGradient id="fg2" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0%" stop-color="#0055ff" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#00d4ff" stop-opacity="0.15"/>
+              </linearGradient>
+            </defs>
+            <rect x="1" y="1" width="36" height="36" rx="4" stroke="url(#fg1)" stroke-width="1" fill="url(#fg2)"/>
+            <line x1="6"  y1="10.5" x2="32" y2="10.5" stroke="#00d4ff" stroke-width="0.6" stroke-opacity="0.35"/>
+            <line x1="6"  y1="19"   x2="32" y2="19"   stroke="#00d4ff" stroke-width="0.6" stroke-opacity="0.35"/>
+            <line x1="6"  y1="27.5" x2="32" y2="27.5" stroke="#00d4ff" stroke-width="0.6" stroke-opacity="0.35"/>
+            <line x1="19" y1="4" x2="19" y2="34" stroke="#0077ff" stroke-width="0.6" stroke-opacity="0.3"/>
+            <rect x="8" y="10" width="2.2" height="18" fill="url(#fg1)"/>
+            <rect x="8" y="10" width="14" height="2.2" fill="url(#fg1)"/>
+            <rect x="8" y="18.9" width="11" height="2.2" fill="url(#fg1)"/>
+            <rect x="8" y="25.8" width="14" height="2.2" fill="url(#fg1)"/>
+            <circle cx="29" cy="9" r="2.8" fill="#00d4ff" opacity="0.9"/>
+            <circle cx="29" cy="9" r="5"   fill="none" stroke="#00d4ff" stroke-width="0.8" stroke-opacity="0.35"/>
+            <line x1="33" y1="14" x2="36" y2="14" stroke="#00d4ff" stroke-width="1.2" stroke-opacity="0.7" stroke-linecap="round"/>
+            <line x1="33" y1="19" x2="36" y2="19" stroke="#00d4ff" stroke-width="1.2" stroke-opacity="0.5" stroke-linecap="round"/>
+            <line x1="33" y1="24" x2="36" y2="24" stroke="#00d4ff" stroke-width="1.2" stroke-opacity="0.3" stroke-linecap="round"/>
+            <text x="46" y="25" font-family="'Space Mono', 'Courier New', monospace" font-size="17" font-weight="700" letter-spacing="3.5" fill="url(#fg1)" text-anchor="start">ENXIEL</text>
+          </svg>
+          <p>Cybersecurity, OT resilience, and AI governance advisory for critical infrastructure organizations.</p>
+        </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Risk Assessments</a></li>
+          <li><a href="#services">OT / ICS Security</a></li>
+          <li><a href="#services">GRC & Compliance</a></li>
+          <li><a href="#services">AI Governance</a></li>
+          <li><a href="#services">Threat Detection</a></li>
+          <li><a href="#services">Zero Trust</a></li>
+          <li><a href="#services">Security Awareness Training</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#approach">Our Approach</a></li>
+          <li><a href="#insights">Insights</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Frameworks</h4>
+        <ul>
+          <li><a href="#">NIST CSF 2.0</a></li>
+          <li><a href="#">NERC CIP</a></li>
+          <li><a href="#">IEC 62443</a></li>
+          <li><a href="#">CMMC 2.0</a></li>
+          <li><a href="#">NIST AI RMF</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 ENXIEL. All rights reserved.</p>
+      <p>Built for critical infrastructure. <a href="mailto:contact@enxiel.com">contact@enxiel.com</a></p>
+    </div>
+  </footer>
+
+  <!-- ─── SCRIPTS ───────────────────────────────────────────── -->
+  <script>
+    // ── Pillar tab switcher
+    document.querySelectorAll('.pillar-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const idx = tab.dataset.tab;
+        document.querySelectorAll('.pillar-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.pillar-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelector(`.pillar-panel[data-panel="${idx}"]`).classList.add('active');
+      });
+    });
+
+    // ── Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // ── Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    document.querySelectorAll('.mobile-link').forEach(l => {
+      l.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    // ── Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    revealEls.forEach(el => observer.observe(el));
+
+    // ── Animated stat counters
+    function animateCount(el) {
+      const target = parseFloat(el.dataset.count || '0');
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const isDecimal = el.dataset.decimal === 'true';
+      const duration = 1800;
+      const start = performance.now();
+
+      function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const value = ease * target;
+        el.textContent = prefix + (isDecimal ? value.toFixed(1) : Math.round(value).toLocaleString()) + (isDecimal ? 'M' : '') + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+
+    const statsEl = document.querySelector('.stats-inner');
+    const statsObserver = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        document.querySelectorAll('.stat-number[data-count]').forEach(animateCount);
+        statsObserver.disconnect();
+      }
+    }, { threshold: 0.4 });
+    if (statsEl) statsObserver.observe(statsEl);
+
+    // ── Form submit
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+      setTimeout(() => {
+        document.getElementById('formWrap').style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
