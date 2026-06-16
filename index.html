@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABRM™ | Open Governance Standard for Autonomous AI Systems</title>
+  <meta name="description" content="ABRM™ — Agentic Blast Radius & Micro-Attestation. The open governance architecture for autonomous AI systems. Measure blast radius, verify every action, contain autonomous risk before it becomes enterprise risk.">
+  <meta name="keywords" content="ABRM framework, agentic AI governance, autonomous AI risk, blast radius AI, micro-attestation, AI governance standard, agentic risk management, autonomous systems governance, AI containment, runtime enforcement AI">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.abrmframework.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.abrmframework.com/">
+  <meta property="og:title" content="ABRM™ | Governance Standard for Autonomous AI Systems">
+  <meta property="og:description" content="The open governance architecture for autonomous AI systems — measuring blast radius, verifying every action, containing autonomous risk before it becomes enterprise risk.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ABRM™ | Governance Standard for Autonomous AI Systems">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "name": "ABRM™ Framework",
+    "headline": "Agentic Blast Radius & Micro-Attestation — Open Governance Standard for Autonomous AI Systems",
+    "description": "ABRM™ defines a governance architecture for autonomous AI systems through measurable blast radius constraints, continuous micro-attestation, runtime enforcement, and atomic containment.",
+    "url": "https://www.abrmframework.com/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "ABRM™ Framework Group",
+      "url": "https://www.abrmframework.com"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "ENXIEL",
+      "url": "https://www.enxiel.com"
+    }
+  }
+  </script>
+
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --bg:       #06080d;
+      --bg2:      #0a0d14;
+      --bg3:      #0e1219;
+      --surface:  #121720;
+      --border:   rgba(255,255,255,0.06);
+      --border2:  rgba(123,47,255,0.2);
+
+      --purple:   #8b5cf6;
+      --purple2:  #6d28d9;
+      --cyan:     #22d3ee;
+      --blue:     #3b82f6;
+      --green:    #10b981;
+
+      --text:     #e2e8f4;
+      --muted:    #64748b;
+      --mono:     'Space Mono', monospace;
+      --display:  'Bebas Neue', sans-serif;
+      --body:     'Barlow', sans-serif;
+      --r:        6px;
+      --t:        0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    h1,h2,h3 { font-family: var(--display); line-height: 1.05; letter-spacing: 0.03em; }
+    h4,h5 { font-family: var(--body); font-weight: 600; }
+    a { color: inherit; text-decoration: none; }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 2px; }
+
+    /* noise */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.02;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 68px;
+      transition: background var(--t), border-color var(--t);
+      border-bottom: 1px solid transparent;
+    }
+
+    nav.scrolled {
+      background: rgba(6,8,13,0.9);
+      backdrop-filter: blur(20px);
+      border-color: var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .nav-logo-mark {
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--purple2), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .nav-logo-text {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      background: linear-gradient(90deg, var(--purple), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color var(--t);
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-enxiel {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(139,92,246,0.08);
+      border: 1px solid rgba(139,92,246,0.25);
+      border-radius: 100px;
+      padding: 0.35rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--purple);
+      transition: background var(--t), border-color var(--t);
+    }
+
+    .nav-enxiel:hover {
+      background: rgba(139,92,246,0.15);
+      border-color: rgba(139,92,246,0.4);
+    }
+
+    /* ── HERO ─────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 120px 5% 80px;
+      text-align: center;
+    }
+
+    /* grid atmosphere */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      animation: gridDrift 25s linear infinite;
+    }
+
+    @keyframes gridDrift {
+      from { background-position: 0 0; }
+      to   { background-position: 48px 48px; }
+    }
+
+    .hero-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+
+    .glow-1 {
+      width: 700px; height: 700px;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(109,40,217,0.12), transparent 65%);
+      animation: breathe 8s ease-in-out infinite;
+    }
+
+    .glow-2 {
+      width: 400px; height: 400px;
+      bottom: -100px; right: 10%;
+      background: radial-gradient(circle, rgba(34,211,238,0.07), transparent 65%);
+      animation: breathe 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes breathe {
+      0%,100% { transform: translateX(-50%) scale(1); opacity: 1; }
+      50%      { transform: translateX(-50%) scale(1.08); opacity: 0.8; }
+    }
+
+    .glow-2 { animation: breathe2 10s ease-in-out infinite reverse; }
+    @keyframes breathe2 {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.1); }
+    }
+
+    .hero-inner {
+      position: relative;
+      max-width: 820px;
+    }
+
+    .hero-standard-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(139,92,246,0.08);
+      border: 1px solid rgba(139,92,246,0.25);
+      border-radius: 100px;
+      padding: 0.4rem 1.2rem;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: riseIn 0.6s ease forwards 0.2s;
+    }
+
+    .badge-pulse {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--purple);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 0.92;
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: riseIn 0.7s ease forwards 0.4s;
+    }
+
+    .hero h1 .line-purple {
+      background: linear-gradient(90deg, var(--purple), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 2.5rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.8;
+      opacity: 0;
+      animation: riseIn 0.7s ease forwards 0.6s;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: riseIn 0.7s ease forwards 0.8s;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--purple2), var(--purple));
+      color: #fff;
+      padding: 0.85rem 2rem;
+      border-radius: var(--r);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: transform var(--t), box-shadow var(--t);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(109,40,217,0.4);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.85rem 2rem;
+      border-radius: var(--r);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: border-color var(--t), color var(--t);
+    }
+
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+
+    /* hero spec hash */
+    .hero-hash {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      opacity: 0.5;
+      opacity: 0;
+      animation: riseIn 0.7s ease forwards 1.2s;
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── PROBLEM SECTION ──────────────────────────────────────── */
+    .problem {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 100px 5%;
+    }
+
+    .problem-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .problem-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 0.8rem;
+    }
+
+    .problem h2 {
+      font-size: clamp(2.5rem, 4vw, 3.8rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .problem p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+
+    .problem-quote {
+      margin-top: 2rem;
+      padding: 1.2rem 1.5rem;
+      border-left: 3px solid var(--purple);
+      background: rgba(139,92,246,0.05);
+      border-radius: 0 var(--r) var(--r) 0;
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    /* gap list */
+    .gap-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5px;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+
+    .gap-item {
+      background: var(--bg3);
+      padding: 1.4rem 1.8rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: background var(--t);
+    }
+
+    .gap-item:hover { background: var(--surface); }
+
+    .gap-x {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      color: #ef4444;
+      font-weight: 700;
+    }
+
+    .gap-text strong {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+
+    .gap-text span {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── ARCHITECTURE ─────────────────────────────────────────── */
+    .architecture {
+      background: var(--bg);
+      padding: 110px 5%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .architecture::before {
+      content: '';
+      position: absolute;
+      width: 900px; height: 900px;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      background: radial-gradient(circle, rgba(109,40,217,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .arch-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .arch-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .arch-header .problem-label { display: block; margin-bottom: 0.8rem; }
+
+    .arch-header h2 {
+      font-size: clamp(2.5rem, 4.5vw, 4rem);
+      margin-bottom: 1rem;
+    }
+
+    .arch-header p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      max-width: 580px;
+      margin: 0 auto;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    /* animated layer stack */
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-bottom: 4rem;
+    }
+
+    .arch-layer {
+      display: grid;
+      grid-template-columns: 180px 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.6s ease, transform 0.6s ease, border-color var(--t);
+    }
+
+    .arch-layer.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .arch-layer:nth-child(1) { transition-delay: 0s; }
+    .arch-layer:nth-child(2) { transition-delay: 0.1s; }
+    .arch-layer:nth-child(3) { transition-delay: 0.2s; }
+    .arch-layer:nth-child(4) { transition-delay: 0.3s; }
+    .arch-layer:nth-child(5) { transition-delay: 0.4s; }
+
+    .arch-layer:hover { border-color: rgba(139,92,246,0.3); }
+
+    .arch-layer-num {
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .arch-layer-index {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+    }
+
+    .arch-layer-abbr {
+      font-family: var(--mono);
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--purple);
+    }
+
+    .arch-layer-main {
+      background: var(--bg3);
+      border-right: 1px solid var(--border);
+      padding: 1.8rem 2rem;
+    }
+
+    .arch-layer-title {
+      font-family: var(--body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.01em;
+    }
+
+    .arch-layer-desc {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    .arch-layer-detail {
+      background: var(--bg2);
+      padding: 1.8rem 2rem;
+    }
+
+    .arch-layer-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .ctrl-tag {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      border: 1px solid rgba(139,92,246,0.2);
+      background: rgba(139,92,246,0.06);
+      color: var(--purple);
+    }
+
+    /* layer color accents */
+    .arch-layer:nth-child(1) .arch-layer-abbr { color: #64748b; }
+    .arch-layer:nth-child(1) .ctrl-tag { color: #64748b; border-color: rgba(100,116,139,0.25); background: rgba(100,116,139,0.06); }
+    .arch-layer:nth-child(2) .arch-layer-abbr { color: var(--cyan); }
+    .arch-layer:nth-child(2) .ctrl-tag { color: var(--cyan); border-color: rgba(34,211,238,0.2); background: rgba(34,211,238,0.05); }
+    .arch-layer:nth-child(3) .arch-layer-abbr { color: var(--purple); }
+    .arch-layer:nth-child(4) .arch-layer-abbr { color: var(--blue); }
+    .arch-layer:nth-child(4) .ctrl-tag { color: var(--blue); border-color: rgba(59,130,246,0.2); background: rgba(59,130,246,0.05); }
+    .arch-layer:nth-child(5) .arch-layer-abbr { color: var(--green); }
+    .arch-layer:nth-child(5) .ctrl-tag { color: var(--green); border-color: rgba(16,185,129,0.2); background: rgba(16,185,129,0.05); }
+
+    /* ── PRINCIPLES ───────────────────────────────────────────── */
+    .principles {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 100px 5%;
+    }
+
+    .principles-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .principles-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .principles-header h2 { font-size: clamp(2.2rem, 3.5vw, 3.2rem); }
+    .principles-header p { font-size: 0.95rem; color: var(--muted); font-weight: 300; margin-top: 0.8rem; max-width: 520px; margin-left: auto; margin-right: auto; }
+
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 3rem;
+    }
+
+    .principle-card {
+      background: var(--bg3);
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: background var(--t);
+    }
+
+    .principle-card:hover { background: var(--surface); }
+
+    .principle-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--purple2), var(--purple));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .principle-card:hover::before { transform: scaleX(1); }
+
+    .principle-num {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--purple);
+      margin-bottom: 1rem;
+      opacity: 0.7;
+    }
+
+    .principle-card h4 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.7rem;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    .principle-card p {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    /* ── WHY NOW ──────────────────────────────────────────────── */
+    .why-now {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 100px 5%;
+    }
+
+    .why-now-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 4rem;
+    }
+
+    .stat-block {
+      background: var(--bg2);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: background var(--t);
+    }
+
+    .stat-block:hover { background: var(--bg3); }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 4vw, 4rem);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      background: linear-gradient(135deg, #fff 0%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    .stat-source {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      color: var(--muted);
+      opacity: 0.6;
+      margin-top: 0.4rem;
+      letter-spacing: 0.05em;
+    }
+
+    .why-now-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .why-now h2 {
+      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+      margin-bottom: 1.2rem;
+    }
+
+    .why-now p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+
+    .why-now-callout {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: var(--r);
+      padding: 2rem;
+    }
+
+    .callout-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 1rem;
+    }
+
+    .callout-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .callout-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .callout-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--purple);
+      flex-shrink: 0;
+      margin-top: 0.45rem;
+    }
+
+    /* ── ENXIEL BRIDGE ────────────────────────────────────────── */
+    .bridge {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 100px 5%;
+    }
+
+    .bridge-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .bridge h2 {
+      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+      margin-bottom: 1.2rem;
+    }
+
+    .bridge p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+
+    .bridge-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .bridge-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bridge-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--purple), var(--cyan));
+    }
+
+    .bridge-card-top {
+      padding: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .bridge-logo {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      background: linear-gradient(90deg, var(--cyan), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .bridge-tagline {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    .bridge-services {
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .bridge-svc {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .bridge-svc-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--cyan);
+      flex-shrink: 0;
+    }
+
+    .bridge-cta-row {
+      padding: 1.2rem 2rem;
+      background: rgba(0,212,255,0.03);
+      border-top: 1px solid var(--border);
+    }
+
+    .bridge-link {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap var(--t);
+    }
+
+    .bridge-link:hover { gap: 0.7rem; }
+
+    /* ── CONTACT ──────────────────────────────────────────────── */
+    .contact {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 100px 5%;
+    }
+
+    .contact-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact h2 {
+      font-size: clamp(2.5rem, 4vw, 3.8rem);
+      margin-bottom: 1rem;
+    }
+
+    .contact > div > p {
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-option {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.8rem;
+      transition: border-color var(--t), transform var(--t);
+    }
+
+    .contact-option:hover {
+      border-color: rgba(139,92,246,0.3);
+      transform: translateY(-2px);
+    }
+
+    .co-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 0.5rem;
+    }
+
+    .co-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .co-email {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--purple);
+      letter-spacing: 0.05em;
+    }
+
+    .contact-note {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      opacity: 0.7;
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 40px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer p {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    footer a { color: var(--purple); transition: opacity var(--t); }
+    footer a:hover { opacity: 0.7; }
+
+    /* ── SCROLL REVEAL ────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-stagger > * {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .reveal-stagger.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay:0s; }
+    .reveal-stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay:0.1s; }
+    .reveal-stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay:0.2s; }
+    .reveal-stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay:0.3s; }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .problem-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .arch-layer { grid-template-columns: 120px 1fr; }
+      .arch-layer-detail { display: none; }
+      .principles-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .why-now-grid { grid-template-columns: 1fr; }
+      .bridge-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .contact-options { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ───────────────────────────────────────────────────── -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-mark">AB</div>
+      <span class="nav-logo-text">ABRM™</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#architecture">Model</a></li>
+      <li><a href="#principles">Principles</a></li>
+      <li><a href="#why-now">Why Now</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="https://www.enxiel.com" target="_blank" rel="noopener" class="nav-enxiel">
+      ← ENXIEL.COM
+    </a>
+  </nav>
+
+  <!-- ── HERO ──────────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero-glow glow-1"></div>
+    <div class="hero-glow glow-2"></div>
+
+    <div class="hero-inner">
+      <div class="hero-standard-badge">
+        <div class="badge-pulse"></div>
+        Open Governance Standard &nbsp;·&nbsp; Autonomous AI Systems
+      </div>
+
+      <h1>
+        Contain Autonomous Risk<br>
+        <span class="line-purple">Before It Becomes</span>
+        Enterprise Risk.
+      </h1>
+
+      <p class="hero-sub">
+        ABRM™ — Agentic Blast Radius & Micro-Attestation — defines the governance architecture for autonomous AI systems. Measure the blast radius of every agent. Verify every action cryptographically. Enforce boundaries at runtime. Contain what cannot be undone.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="#architecture" class="btn-primary">Explore the Architecture →</a>
+        <a href="https://www.enxiel.com/#contact" target="_blank" rel="noopener" class="btn-ghost">Implement ABRM™ with ENXIEL</a>
+      </div>
+    </div>
+
+    <div class="hero-hash">ABRM™ FRAMEWORK &nbsp;·&nbsp; GOVERNANCE FOR THE AUTONOMOUS ERA &nbsp;·&nbsp; © 2026</div>
+  </header>
+
+  <!-- ── THE PROBLEM ────────────────────────────────────────────── -->
+  <section class="problem" id="problem">
+    <div class="problem-inner">
+
+      <div class="reveal">
+        <div class="problem-label">The Governance Gap</div>
+        <h2>Existing Frameworks Were Not Built for This.</h2>
+        <p>ISO 27001, NIST CSF, SOC 2 — the standards most organizations rely on were designed to govern static systems operated by human decision-makers. They assume a human approves each significant action. They assume risk can be assessed before deployment.</p>
+        <p>Autonomous AI agents operate differently. They make thousands of decisions per minute, traverse multiple systems, invoke APIs, execute transactions, and take actions with real operational and financial consequences — without a human in the approval loop.</p>
+        <div class="problem-quote">
+          "The gap is not a tool problem. It is a governance architecture problem. ABRM™ was built to close it."
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="gap-list">
+          <div class="gap-item">
+            <div class="gap-x">✕</div>
+            <div class="gap-text">
+              <strong>ISO 27001 / NIST CSF</strong>
+              <span>Designed for human-operated systems. No blast radius quantification. No runtime attestation model. No agentic boundary enforcement.</span>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-x">✕</div>
+            <div class="gap-text">
+              <strong>SOC 2 / HIPAA / CMMC</strong>
+              <span>Compliance-focused. Audit-periodic. Built for point-in-time snapshots, not continuous autonomous action verification.</span>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-x">✕</div>
+            <div class="gap-text">
+              <strong>NIST AI RMF</strong>
+              <span>A risk management foundation — not a governance execution standard. It identifies what to think about. ABRM™ defines how to govern it.</span>
+            </div>
+          </div>
+          <div class="gap-item">
+            <div class="gap-x">✕</div>
+            <div class="gap-text">
+              <strong>EU AI Act</strong>
+              <span>Regulatory classification and obligations. Does not provide the governance architecture organizations need to actually demonstrate compliance for autonomous systems.</span>
+            </div>
+          </div>
+          <div class="gap-item" style="border-bottom:none;">
+            <div class="gap-x" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.25);color:#10b981;">✓</div>
+            <div class="gap-text">
+              <strong>ABRM™ fills the gap</strong>
+              <span>A purpose-built governance architecture for autonomous systems — complementary to existing frameworks, not a replacement for them.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── ARCHITECTURE ───────────────────────────────────────────── -->
+  <section class="architecture" id="architecture">
+    <div class="arch-inner">
+
+      <div class="arch-header reveal">
+        <span class="problem-label">Governance Model</span>
+        <h2>A Layered Architecture.<br>From Intent to Containment.</h2>
+        <p>Five governance layers that operate in sequence — from human strategic ownership down to atomic execution boundaries. Every autonomous action passes through all five.</p>
+      </div>
+
+      <div class="arch-layers">
+
+        <div class="arch-layer">
+          <div class="arch-layer-num">
+            <div class="arch-layer-index">LAYER 01</div>
+            <div class="arch-layer-abbr">HA</div>
+          </div>
+          <div class="arch-layer-main">
+            <div class="arch-layer-title">Human Accountability</div>
+            <div class="arch-layer-desc">Strategic intent, governance ownership, and policy authority. Every autonomous system operates under a designated human accountable for its blast radius and behavior.</div>
+          </div>
+          <div class="arch-layer-detail">
+            <div class="arch-layer-controls">
+              <span class="ctrl-tag">Policy Authority</span>
+              <span class="ctrl-tag">Governance Ownership</span>
+              <span class="ctrl-tag">Strategic Intent</span>
+              <span class="ctrl-tag">Human Accountability Chain</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-layer">
+          <div class="arch-layer-num">
+            <div class="arch-layer-index">LAYER 02</div>
+            <div class="arch-layer-abbr">ABR</div>
+          </div>
+          <div class="arch-layer-main">
+            <div class="arch-layer-title">Agentic Blast Radius</div>
+            <div class="arch-layer-desc">Quantifiable measurement of the maximum allowable operational, financial, data, and systemic impact an autonomous agent can cause. Defined before deployment. Enforced at runtime.</div>
+          </div>
+          <div class="arch-layer-detail">
+            <div class="arch-layer-controls">
+              <span class="ctrl-tag">Impact Quantification</span>
+              <span class="ctrl-tag">Radius Boundaries</span>
+              <span class="ctrl-tag">Financial Thresholds</span>
+              <span class="ctrl-tag">Data Scope Limits</span>
+              <span class="ctrl-tag">System Access Constraints</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-layer">
+          <div class="arch-layer-num">
+            <div class="arch-layer-index">LAYER 03</div>
+            <div class="arch-layer-abbr">MA</div>
+          </div>
+          <div class="arch-layer-main">
+            <div class="arch-layer-title">Micro-Attestation</div>
+            <div class="arch-layer-desc">Continuous cryptographic verification of agent identity, intent, context, and authorization before every action executes. No assumption of trust between steps.</div>
+          </div>
+          <div class="arch-layer-detail">
+            <div class="arch-layer-controls">
+              <span class="ctrl-tag">Identity Verification</span>
+              <span class="ctrl-tag">Intent Validation</span>
+              <span class="ctrl-tag">Context Attestation</span>
+              <span class="ctrl-tag">Authorization Proof</span>
+              <span class="ctrl-tag">Cryptographic Signing</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-layer">
+          <div class="arch-layer-num">
+            <div class="arch-layer-index">LAYER 04</div>
+            <div class="arch-layer-abbr">RE</div>
+          </div>
+          <div class="arch-layer-main">
+            <div class="arch-layer-title">Runtime Enforcement</div>
+            <div class="arch-layer-desc">Active governance applied during execution — not before or after. Controls govern agent behavior across systems, APIs, workflows, and data access in real time.</div>
+          </div>
+          <div class="arch-layer-detail">
+            <div class="arch-layer-controls">
+              <span class="ctrl-tag">API Governance</span>
+              <span class="ctrl-tag">Real-Time Policy</span>
+              <span class="ctrl-tag">Workflow Controls</span>
+              <span class="ctrl-tag">Access Enforcement</span>
+              <span class="ctrl-tag">Execution Monitoring</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-layer">
+          <div class="arch-layer-num">
+            <div class="arch-layer-index">LAYER 05</div>
+            <div class="arch-layer-abbr">AC</div>
+          </div>
+          <div class="arch-layer-main">
+            <div class="arch-layer-title">Atomic Containment</div>
+            <div class="arch-layer-desc">Isolated execution environments that prevent lateral movement, systemic propagation, and cascading failures. Each action is atomic — reversible where possible, bounded where not.</div>
+          </div>
+          <div class="arch-layer-detail">
+            <div class="arch-layer-controls">
+              <span class="ctrl-tag">Execution Isolation</span>
+              <span class="ctrl-tag">Lateral Movement Prevention</span>
+              <span class="ctrl-tag">Rollback Mechanisms</span>
+              <span class="ctrl-tag">Boundary Enforcement</span>
+              <span class="ctrl-tag">Propagation Controls</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRINCIPLES ─────────────────────────────────────────────── -->
+  <section class="principles" id="principles">
+    <div class="principles-inner">
+      <div class="principles-header reveal">
+        <div class="problem-label">Governance Principles</div>
+        <h2>Three Non-Negotiables.</h2>
+        <p>Every ABRM™-governed system adheres to these principles regardless of scale, architecture, or deployment context.</p>
+      </div>
+
+      <div class="principles-grid reveal-stagger">
+        <div class="principle-card">
+          <div class="principle-num">PRINCIPLE 01</div>
+          <h4>No Autonomous System Operates Without a Measurable Blast Radius.</h4>
+          <p>Before any agent is deployed, its maximum allowable impact must be defined, quantified, and bounded. An ungoverned blast radius is not an oversight — it is a governance failure.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">PRINCIPLE 02</div>
+          <h4>Trust Must Be Continuously Validated at Runtime. Not Assumed.</h4>
+          <p>Agent identity, intent, and authorization are not established once at initialization. Every action requires fresh attestation. Trust is earned per-execution, not granted per-session.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">PRINCIPLE 03</div>
+          <h4>No High-Impact Action Executes Without Attestation.</h4>
+          <p>Any action that crosses a defined impact threshold — financial, operational, data, or systemic — requires cryptographic proof of authorization before execution proceeds. No exceptions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHY NOW ────────────────────────────────────────────────── -->
+  <section class="why-now" id="why-now">
+    <div class="why-now-inner">
+
+      <div class="stats-row reveal-stagger">
+        <div class="stat-block">
+          <div class="stat-num">2×</div>
+          <div class="stat-label">AI agent adoption expected to double in 3 years across enterprises</div>
+          <div class="stat-source">McKinsey, 2025</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">1%</div>
+          <div class="stat-label">of organizations believe their AI adoption has reached maturity</div>
+          <div class="stat-source">McKinsey Superagency, 2025</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">&lt;25%</div>
+          <div class="stat-label">of organizations deploying AI have formal governance in place</div>
+          <div class="stat-source">McKinsey AI Trust Survey, 2026</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">68%</div>
+          <div class="stat-label">of leaders rank AI risk governance as their top operational priority</div>
+          <div class="stat-source">McKinsey AI Trust Survey, 2026</div>
+        </div>
+      </div>
+
+      <div class="why-now-grid reveal">
+        <div>
+          <div class="problem-label">Why This Matters Now</div>
+          <h2>The Governance Window Is Open. Briefly.</h2>
+          <p>Organizations that define governance architecture before autonomous AI systems are deeply embedded have a structural advantage. Those that wait will govern retroactively — under pressure, under incident, or under regulatory scrutiny.</p>
+          <p>ABRM™ is not a future-state aspiration. It is a deployable governance model for organizations operating autonomous AI today — and those building the architecture for what comes next.</p>
+        </div>
+        <div class="why-now-callout">
+          <div class="callout-label">What ABRM™ Enables</div>
+          <div class="callout-items">
+            <div class="callout-item"><div class="callout-dot"></div><span>Board-defensible governance over autonomous AI systems</span></div>
+            <div class="callout-item"><div class="callout-dot"></div><span>Audit-ready evidence of blast radius controls and attestation</span></div>
+            <div class="callout-item"><div class="callout-dot"></div><span>Regulatory alignment for NIST AI RMF, ISO 42001, and EU AI Act</span></div>
+            <div class="callout-item"><div class="callout-dot"></div><span>Operational trust in AI-driven workflows and autonomous agents</span></div>
+            <div class="callout-item"><div class="callout-dot"></div><span>A methodology that scales from pilot deployment to enterprise production</span></div>
+            <div class="callout-item"><div class="callout-dot"></div><span>Foundation for future ABRM™ maturity framework and certification</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── ENXIEL BRIDGE ──────────────────────────────────────────── -->
+  <section class="bridge" id="implement">
+    <div class="bridge-inner">
+      <div class="reveal">
+        <div class="problem-label">Advisory Implementation</div>
+        <h2>ABRM™ Is a Standard.<br>ENXIEL Makes It Operational.</h2>
+        <p>ABRM™ defines the governance architecture. ENXIEL is the advisory firm that implements it — scoping your autonomous AI environment, assessing blast radius exposure, building attestation frameworks, and preparing your organization for board and regulatory scrutiny.</p>
+        <p>ENXIEL also covers the broader security and governance landscape that ABRM™ operates within — GRC, IT/OT security, operational resilience, vCISO advisory, and compliance modernization across every major framework.</p>
+        <div class="bridge-ctas">
+          <a href="https://www.enxiel.com/#contact" target="_blank" rel="noopener" class="btn-primary">Implement with ENXIEL →</a>
+          <a href="https://www.enxiel.com" target="_blank" rel="noopener" class="btn-ghost">Visit ENXIEL.COM</a>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="bridge-card">
+          <div class="bridge-card-top">
+            <div class="bridge-logo">ENXIEL</div>
+            <div class="bridge-tagline">Technology Trust · Cybersecurity · GRC · AI Governance · Operational Resilience. Advisory firm and ABRM™ implementation partner.</div>
+          </div>
+          <div class="bridge-services">
+            <div class="bridge-svc"><div class="bridge-svc-dot"></div><span>ABRM™ Assessment & Implementation</span></div>
+            <div class="bridge-svc"><div class="bridge-svc-dot"></div><span>AI Governance Programs (NIST AI RMF · ISO 42001)</span></div>
+            <div class="bridge-svc"><div class="bridge-svc-dot"></div><span>IT / OT Cybersecurity & ICS/SCADA</span></div>
+            <div class="bridge-svc"><div class="bridge-svc-dot"></div><span>GRC & Compliance (ISO 27001 · CMMC · SOC 2)</span></div>
+            <div class="bridge-svc"><div class="bridge-svc-dot"></div><span>vCISO & Executive Risk Advisory</span></div>
+            <div class="bridge-svc"><div class="bridge-svc-dot"></div><span>Operational Resilience & Business Continuity</span></div>
+          </div>
+          <div class="bridge-cta-row">
+            <a href="https://www.enxiel.com" target="_blank" rel="noopener" class="bridge-link">
+              Visit enxiel.com →
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CONTACT ────────────────────────────────────────────────── -->
+  <section class="contact" id="contact">
+    <div class="contact-inner reveal">
+      <div class="problem-label">Contact</div>
+      <h2>Get Involved.</h2>
+      <p>Whether you're implementing ABRM™, contributing to the governance standard, or exploring what autonomous AI governance means for your organization — we want to hear from you.</p>
+
+      <div class="contact-options">
+        <div class="contact-option">
+          <div class="co-label">Advisory & Implementation</div>
+          <div class="co-title">Implement ABRM™ with expert advisory support</div>
+          <a href="https://www.enxiel.com/#contact" target="_blank" rel="noopener" class="co-email">enxiel.com/contact →</a>
+        </div>
+        <div class="contact-option">
+          <div class="co-label">Framework Inquiries</div>
+          <div class="co-title">Questions about the standard, collaboration, or adoption</div>
+          <a href="mailto:security@abrmframework.com" class="co-email">security@abrmframework.com</a>
+        </div>
+      </div>
+
+      <p class="contact-note">ABRM™ IS AN OPEN GOVERNANCE STANDARD · DEVELOPED BY ENXIEL · © 2026 ABRM™ FRAMEWORK GROUP</p>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────── -->
+  <footer>
+    <p>© 2026 ABRM™ FRAMEWORK GROUP &nbsp;·&nbsp; ALL RIGHTS RESERVED</p>
+    <p>DEVELOPED BY <a href="https://www.enxiel.com" target="_blank" rel="noopener">ENXIEL</a> &nbsp;·&nbsp; <a href="mailto:security@abrmframework.com">security@abrmframework.com</a></p>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal, .reveal-stagger');
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    reveals.forEach(el => revealObs.observe(el));
+
+    // Architecture layers staggered reveal
+    const layers = document.querySelectorAll('.arch-layer');
+    const layerObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+    layers.forEach(l => layerObs.observe(l));
+  </script>
+</body>
+</html>
