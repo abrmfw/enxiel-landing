@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact ENXIEL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body>
+
+<section class="section">
+  <h1>Schedule an Executive Conversation</h1>
+
+  <form method="POST" action="/api/contact">
+
+    <input name="name" placeholder="Full Name" required><br><br>
+    <input name="email" placeholder="Business Email" required><br><br>
+    <input name="org" placeholder="Organization"><br><br>
+
+    <select name="interest">
+      <option>Cybersecurity Strategy</option>
+      <option>AI Governance</option>
+      <option>Technology Governance</option>
+      <option>Operational Resilience</option>
+    </select><br><br>
+
+    <textarea name="message" placeholder="Describe your challenge..." required></textarea><br><br>
+
+    <button type="submit">Send Inquiry</button>
+
+  </form>
+
+</section>
+
+</body>
+</html>
