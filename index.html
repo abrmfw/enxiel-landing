@@ -4846,7 +4846,7 @@
       btn.disabled = true;
 
       try {
-        const res = await fetch(CONTACT_WORKER_URL, {
+        const res = await fetch("https://enxworker.abrmfw.workers.dev/", {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
